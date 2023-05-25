@@ -85,9 +85,7 @@ class News extends BaseController
             return view('templates/header', $data)
             . view('news/update')
             . view('templates/footer');
-        }       
-        
-        //Esta bien hasta aca        
+        }             
         $post = $this->request->getPost(['id','title', 'body']);
         $model->save([
             'id'=> $post['id'],
@@ -95,8 +93,20 @@ class News extends BaseController
             'slug'  => url_title($post['title'], '-', true),
             'body'  => $post['body'],
         ]);
-        return view('templates/header', ['title' => 'Create a news item'])
+        return view('templates/header', ['title' => 'Informacion actualizada'])
             . view('news/success')
-            . view('templates/footer');
+            . view('templates/footer');            
     }    
+    public function delete($id=null){
+        $model=model(NewsModel::class);
+        $data['news'] = $model->getById($id);
+        $post = $this->request->getPost(['id']);
+        $model->delete([
+            'id'=> $post['id'],                      
+        ]);
+
+        return view('templates/header', ['title' => 'Informacion actualizada'])
+            . view('news/success')
+            . view('templates/footer'); 
+    }
 }
